@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Schema as MongooseSchema } from 'mongoose';
-import { HydratedDocument } from 'mongoose';
+import { Schema as MongooseSchema, HydratedDocument } from 'mongoose';
 import { Team } from './team.schema';
 
 export type FixtureDocument = HydratedDocument<Fixture>;
@@ -20,9 +19,6 @@ export enum MatchType {
 
 @Schema()
 export class Fixture {
-  @Prop()
-  _id: MongooseSchema.Types.ObjectId;
-
   @Prop({ required: true, type: MongooseSchema.Types.ObjectId, ref: 'Team' })
   homeTeam: Team;
 
