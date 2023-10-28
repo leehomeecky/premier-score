@@ -28,6 +28,7 @@ export class TeamService {
       .find()
       .where('deletedAt')
       .equals(null)
+      .sort({ teamName: 1 })
       .exec();
 
     return allTeams;
