@@ -42,7 +42,11 @@ export class AuthService {
 
   async loginUser(data: LoginUserDto) {
     const { email, password } = data;
-    const user = await this.userModel.findOne({ email });
+    const user = await this.userModel
+      .findOne({ email })
+      .where('deletedAt')
+      .equals(null)
+      .exec();
     if (!user || !(await bcrypt.compare(password, user.password)))
       throw new NotFoundException(null, 'Invalid email/password');
 

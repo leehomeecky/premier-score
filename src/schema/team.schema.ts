@@ -6,10 +6,10 @@ export type TeamDocument = HydratedDocument<Team>;
 @Schema()
 export class Team {
   @Prop({ required: true, unique: true })
-  clubName: string;
+  teamName: string;
 
   @Prop({ required: true, unique: true })
-  clubCode: string;
+  teamCode: string;
 
   @Prop({ required: true })
   slogan: string;
@@ -21,7 +21,7 @@ export class Team {
   coach: string;
 
   @Prop({ requred: true })
-  logoUri: string;
+  logo: string;
 
   @Prop({ type: Date, default: Date.now })
   createdAt: Date;
