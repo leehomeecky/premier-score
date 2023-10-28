@@ -57,10 +57,10 @@ export class TeamController {
   @UseGuards(UserGuard)
   @Get('/')
   async getAllTeams(@Req() req: Request, @Res() resp) {
-    const allTeams = await this.teamService.getAllTeams();
+    const teams = await this.teamService.getAllTeams();
 
     return resp.json({
-      allTeams,
+      teams,
       code: 0,
       message: 'Operation successful',
     });
