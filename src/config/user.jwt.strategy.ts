@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
-import { PassportStrategy, AuthGuard } from '@nestjs/passport';
+import { PassportStrategy } from '@nestjs/passport';
 import { Model } from 'mongoose';
 import { Strategy, ExtractJwt } from 'passport-jwt';
 import { User } from 'src/schema/user.schema';
@@ -24,7 +24,11 @@ export class UserJwtStrategy extends PassportStrategy(
 
   async validate(payload) {
     const { id } = payload;
-    const user = await this.userModel.findById(id);
+    const user = await this.userModel
+      .findById(id)
+      .where('deletedAt')
+      .equals(null)
+      .exec();
     if (!user) throw new UnauthorizedException(null, 'Please login first');
     return user.toObject();
   }

@@ -50,7 +50,12 @@ export class AuthService {
 
   async loginUser(data: LoginUserDto) {
     const { email, password } = data;
-    const adminUser = await this.adminUserModel.findOne({ email });
+    const adminUser = await this.adminUserModel
+      .findOne({ email })
+      .where('deletedAt')
+      .equals(null)
+      .exec();
+
     if (!adminUser || !(await bcrypt.compare(password, adminUser.password)))
       throw new NotFoundException(null, 'Invalid email/password');
     if (!(adminUser.role === Role.ADMIN || adminUser.role === Role.SUPER_ADMIN))

@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
-import { PassportStrategy, AuthGuard } from '@nestjs/passport';
+import { PassportStrategy } from '@nestjs/passport';
 import { Model } from 'mongoose';
 import { Strategy, ExtractJwt } from 'passport-jwt';
 import { Role, User } from 'src/schema/user.schema';
@@ -29,7 +29,11 @@ export class SuperAdminJwtStrategy extends PassportStrategy(
 
   async validate(payload) {
     const { id } = payload;
-    const adminUser = await this.userModel.findById(id);
+    const adminUser = await this.userModel
+      .findById(id)
+      .where('deletedAt')
+      .equals(null)
+      .exec();
     const adminHashString = adminUser.email + adminUser.role;
     if (!adminUser) throw new UnauthorizedException(null, 'Please login first');
     if (

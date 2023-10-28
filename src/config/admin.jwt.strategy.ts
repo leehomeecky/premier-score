@@ -29,7 +29,11 @@ export class AdminJwtStrategy extends PassportStrategy(
 
   async validate(payload) {
     const { id } = payload;
-    const adminUser = await this.userModel.findById(id);
+    const adminUser = await this.userModel
+      .findById(id)
+      .where('deletedAt')
+      .equals(null)
+      .exec();
     const adminHashString = adminUser.email + adminUser.role;
     if (!adminUser) throw new UnauthorizedException(null, 'Please login first');
     if (

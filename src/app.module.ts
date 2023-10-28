@@ -7,6 +7,8 @@ import { FixtureModule } from './modules/fixture/fixture.module';
 import { AuthModule as AdminAuthModule } from './modules/admin/auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { MulterModule } from '@nestjs/platform-express';
+import { MulterConfig } from './config/multer.config';
 
 @Module({
   imports: [
@@ -18,6 +20,7 @@ import { MongooseModule } from '@nestjs/mongoose';
       isGlobal: true,
     }),
     MongooseModule.forRoot(process.env.mongodbUri),
+    MulterModule.register(MulterConfig),
   ],
   controllers: [AppController],
   providers: [AppService],
