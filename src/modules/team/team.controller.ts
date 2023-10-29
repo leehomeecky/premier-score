@@ -22,6 +22,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { MulterConfig } from 'src/config/multer.config';
 import { imageFileFilter } from 'src/utils/multer.utils';
 import { CreateTeamDto, UpdateTeamDto } from './team.dto';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('team')
 export class TeamController {
@@ -56,6 +57,7 @@ export class TeamController {
 
   @UseGuards(UserGuard)
   @Get('/')
+  @UseInterceptors(CacheInterceptor)
   async getAllTeams(@Req() req: Request, @Res() resp) {
     const teams = await this.teamService.getAllTeams();
 
@@ -68,6 +70,7 @@ export class TeamController {
 
   @UseGuards(UserGuard)
   @Get('/:id')
+  @UseInterceptors(CacheInterceptor)
   async getTeam(@Req() req: Request, @Res() resp) {
     const { id } = req.params;
     const team = await this.teamService.getTeam(id);

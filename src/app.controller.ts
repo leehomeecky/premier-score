@@ -1,7 +1,8 @@
-import { Controller, Get, Req, Res } from '@nestjs/common';
+import { Controller, Get, Req, Res, UseInterceptors } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Request, Response } from 'express';
 import { FixtureFilterDto } from './modules/fixture/fixture.dto';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller()
 export class AppController {
@@ -17,6 +18,7 @@ export class AppController {
   }
 
   @Get('/filter')
+  @UseInterceptors(CacheInterceptor)
   async getFilter(
     @Req() req: Request<null, null, null, FixtureFilterDto>,
     @Res() resp,

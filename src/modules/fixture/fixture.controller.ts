@@ -8,6 +8,7 @@ import {
   Req,
   Res,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { FixtureService } from './fixture.service';
 import { AdminGuard } from 'src/guards/admin.guard';
@@ -18,6 +19,7 @@ import {
 } from './fixture.dto';
 import { UserGuard } from 'src/guards/user.guard';
 import { Request } from 'express';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @Controller('fixture')
 export class FixtureController {
@@ -40,6 +42,7 @@ export class FixtureController {
 
   @UseGuards(UserGuard)
   @Get('/')
+  @UseInterceptors(CacheInterceptor)
   async getAllFixtures(
     @Req() req: Request<null, null, null, FixtureFilterDto>,
     @Res() resp,
@@ -56,6 +59,7 @@ export class FixtureController {
 
   @UseGuards(UserGuard)
   @Get('/:id')
+  @UseInterceptors(CacheInterceptor)
   async getFixture(@Req() req: Request, @Res() resp) {
     const { id } = req.params;
     const team = await this.fixtureService.getFixture(id);
@@ -69,7 +73,7 @@ export class FixtureController {
 
   @UseGuards(AdminGuard)
   @Put('/')
-  async updateTeams(
+  async updateFixture(
     @Req() req: Request,
     @Res() resp,
     @Body() body: UpdateFixtureDto,
@@ -84,7 +88,7 @@ export class FixtureController {
 
   @UseGuards(AdminGuard)
   @Delete('/:id')
-  async deleteTeam(@Req() req: Request, @Res() resp) {
+  async deleteFixture(@Req() req: Request, @Res() resp) {
     const { id } = req.params;
     const team = await this.fixtureService.deleteFixture(id);
 
@@ -112,6 +116,7 @@ export class FixtureController {
 
   @UseGuards(UserGuard)
   @Get('/link/:value')
+  @UseInterceptors(CacheInterceptor)
   async processLink(@Req() req: Request, @Res() resp) {
     const { value } = req.params;
     const fixtures = await this.fixtureService.processLink(value);
