@@ -36,6 +36,3 @@ lerna-debug.log*
 
 # Environmental variable
 *.env
-
-# pacages
-package.json
