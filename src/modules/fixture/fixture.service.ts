@@ -182,7 +182,7 @@ export class FixtureService {
 
       return {
         linkId: uniqueString,
-        link: `${process.env.ENV_URI}:${process.env.port}/fixture/link/${uniqueString}`,
+        link: `${process.env.ENV_URI}/fixture/link/${uniqueString}`,
       };
     } catch (e) {
       this.logger.warn(e);
