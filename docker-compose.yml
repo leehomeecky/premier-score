@@ -11,7 +11,7 @@ services:
       - app
     ports:
       - 9800:9800
-    command: [sh, -c, 'npm run start:debug']
+    command: [sh, -c, 'npm run start:dev']
     volumes:
       - .:/app:delegated
       - /app/node_modules
